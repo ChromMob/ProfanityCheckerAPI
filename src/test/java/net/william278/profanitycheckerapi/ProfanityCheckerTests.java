@@ -12,7 +12,6 @@ public class ProfanityCheckerTests {
         Assertions.assertTrue(checker.isTextProfane("This is a fucking test sentence"));
         Assertions.assertTrue(checker.isTextProfaneBypass("Sh1tface"));
         Assertions.assertFalse(checker.isTextProfaneBypass("AHOJ"));
-        Assertions.assertTrue(checker.isTextProfaneBypass("niga"));
         Assertions.assertFalse(checker.isTextProfaneBypass("Hello"));
         Assertions.assertFalse(checker.isTextProfaneBypass("Hello there"));
         Assertions.assertTrue(checker.isTextProfaneBypass("porno"));
