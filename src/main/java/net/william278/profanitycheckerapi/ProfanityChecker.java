@@ -104,7 +104,6 @@ public class ProfanityChecker implements AutoCloseable {
         for (String s : toCheck) {
             double result = getTextProfanityLikelihood(s);
             if (result >= 0.98) {
-                System.out.println("ProfanityChecker: Profanity found in " + s);
                 return true;
             }
             if (System.currentTimeMillis() - startTime > timeLimitMilli) {
