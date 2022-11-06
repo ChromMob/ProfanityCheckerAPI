@@ -101,7 +101,9 @@ public class ProfanityChecker implements AutoCloseable {
         Set<String> toCheck = getTextToCheck(text);
         long startTime = System.currentTimeMillis();
         for (String s : toCheck) {
-            boolean result = isTextProfane(s);
+            double output = toCheck.size()*getTextProfanityLikelihood(s);
+            boolean isProfane = isTextProfane(s);
+            boolean result = (60 > output && output > 30 && isProfane) || (output > 200 && isProfane && output < 500);
             if (result) {
                 return true;
             }
@@ -171,6 +173,8 @@ public class ProfanityChecker implements AutoCloseable {
         toCheck.addAll(addSubStringsBasedOnSpace(toCheck));
         toCheck.addAll(convertNumbersToLetters(toCheck));
         toCheck.addAll(removeRepeatingCharacters(toCheck));
+        toCheck.addAll(duplicateCharacters(toCheck));
+        toCheck.addAll(removeCharactersAppearingMoreThanOnce(toCheck));
         toCheck.removeIf(String::isEmpty);
         return toCheck;
     }
@@ -291,4 +295,45 @@ public class ProfanityChecker implements AutoCloseable {
         }
         return output;
     }
+
+    /**
+     * Removes all repeating characters in appearing more than once in the given strings
+     *
+     * @param input The strings to remove repeating characters from appearing more than once
+     * @return A set of strings with repeating characters removed
+     */
+    public Set<String> removeCharactersAppearingMoreThanOnce(Set<String> input) {
+        Set<String> output = new HashSet<>();
+        for (String s : input) {
+            StringBuilder sb = new StringBuilder();
+            Set<Character> seen = new HashSet<>();
+            for (char c : s.toCharArray()) {
+                if (!seen.contains(c)) {
+                    sb.append(c);
+                    seen.add(c);
+                }
+            }
+            output.add(sb.toString());
+        }
+        return output;
+    }
+
+
+    /**
+     * Duplicates some characters in the given strings
+     *
+     * @param input The strings to duplicate characters in
+     * @return A set of strings with characters duplicated
+     */
+    public Set<String> duplicateCharacters(Set<String> input) {
+        //duplicate 1 character in string
+        Set<String> output = new HashSet<>();
+        for (String s : input) {
+            for (int i = 0; i < s.length(); i++) {
+                output.add(s.substring(0, i) + s.charAt(i) + s.substring(i));
+            }
+        }
+        return output;
+    }
+
 }
