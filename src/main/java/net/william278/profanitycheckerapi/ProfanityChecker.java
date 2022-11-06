@@ -7,6 +7,7 @@ import jep.SharedInterpreter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * A class to check if a string contains profanity.
@@ -101,8 +102,9 @@ public class ProfanityChecker implements AutoCloseable {
         Set<String> toCheck = getTextToCheck(text);
         long startTime = System.currentTimeMillis();
         for (String s : toCheck) {
-            boolean result = isTextProfane(s);
-            if (result) {
+            double result = getTextProfanityLikelihood(s);
+            if (result >= 0.98) {
+                System.out.println("ProfanityChecker: Profanity found in " + s);
                 return true;
             }
             if (System.currentTimeMillis() - startTime > timeLimitMilli) {
@@ -172,6 +174,7 @@ public class ProfanityChecker implements AutoCloseable {
         toCheck.addAll(convertNumbersToLetters(toCheck));
         toCheck.addAll(removeRepeatingCharacters(toCheck));
         toCheck.removeIf(String::isEmpty);
+        toCheck.removeIf(s -> s.length() == 1);
         return toCheck;
     }
 
