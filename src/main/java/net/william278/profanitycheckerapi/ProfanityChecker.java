@@ -271,7 +271,9 @@ public class ProfanityChecker implements AutoCloseable {
                     .replaceAll("o", "0")
                     .replaceAll("s", "5")
                     .replaceAll("t", "7")
-                    .replaceAll("z", "2"));
+                    .replaceAll("z", "2")
+                    .replaceAll("e", "i")
+                    .replaceAll("i", "e"));
         }
         return output;
     }
